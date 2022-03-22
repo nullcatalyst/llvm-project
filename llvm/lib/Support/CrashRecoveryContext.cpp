@@ -180,7 +180,13 @@ CrashRecoveryContext::unregisterCleanup(CrashRecoveryContextCleanup *cleanup) {
   delete cleanup;
 }
 
-#if defined(_MSC_VER)
+#ifdef LLVM_NO_PLATFORM
+
+static void installExceptionOrSignalHandlers() {}
+
+static void uninstallExceptionOrSignalHandlers() {}
+
+#elif defined(_MSC_VER)
 
 #include <windows.h> // for GetExceptionInformation
 
@@ -444,7 +450,9 @@ void CrashRecoveryContext::HandleExit(int RetCode) {
 }
 
 bool CrashRecoveryContext::throwIfCrash(int RetCode) {
-#if defined(_WIN32)
+#ifdef LLVM_NO_PLATFORM
+  return false;
+#elif defined(_WIN32)
   // On Windows, the high bits are reserved for kernel return codes. Values
   // starting with 0x80000000 are reserved for "warnings"; values of 0xC0000000
   // and up are for "errors". In practice, both are interpreted as a

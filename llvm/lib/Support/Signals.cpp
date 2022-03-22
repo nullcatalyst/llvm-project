@@ -101,7 +101,7 @@ void sys::RunSignalHandlers() {
 }
 
 // Signal-safe.
-static void insertSignalHandler(sys::SignalHandlerCallback FnPtr,
+[[maybe_unused]] static void insertSignalHandler(sys::SignalHandlerCallback FnPtr,
                                 void *Cookie) {
   for (size_t I = 0; I < MaxSignalHandlerCallbacks; ++I) {
     auto &SetMe = CallBacksToRun[I];
@@ -247,9 +247,10 @@ static bool printSymbolizedStackTrace(StringRef Argv0, void **StackTrace,
 }
 
 // Include the platform-specific parts of this class.
-#ifdef LLVM_ON_UNIX
+#if defined(LLVM_NO_PLATFORM)
+#include "noop/Signals.inc"
+#elif defined(LLVM_ON_UNIX)
 #include "Unix/Signals.inc"
-#endif
-#ifdef _WIN32
+#elif defined(_WIN32)
 #include "Windows/Signals.inc"
 #endif

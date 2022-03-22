@@ -28,7 +28,7 @@ namespace sys {
 
   /// This is the OS-specific separator for PATH like environment variables:
   // a colon on Unix or a semicolon on Windows.
-#if defined(LLVM_ON_UNIX)
+#if defined(LLVM_ON_UNIX) || defined(LLVM_NO_PLATFORM)
   const char EnvPathSeparator = ':';
 #elif defined (_WIN32)
   const char EnvPathSeparator = ';';

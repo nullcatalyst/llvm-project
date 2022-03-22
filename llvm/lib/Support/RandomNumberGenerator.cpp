@@ -19,10 +19,12 @@
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/raw_ostream.h"
+#ifndef LLVM_NO_PLATFORM
 #ifdef _WIN32
 #include "llvm/Support/Windows/WindowsSupport.h"
 #else
 #include "Unix/Unix.h"
+#endif
 #endif
 
 using namespace llvm;
@@ -66,7 +68,9 @@ RandomNumberGenerator::result_type RandomNumberGenerator::operator()() {
 
 // Get random vector of specified size
 std::error_code llvm::getRandomBytes(void *Buffer, size_t Size) {
-#ifdef _WIN32
+#ifdef LLVM_NO_PLATFORM
+  return std::error_code();
+#elif defined(_WIN32)
   HCRYPTPROV hProvider;
   if (CryptAcquireContext(&hProvider, 0, 0, PROV_RSA_FULL,
                            CRYPT_VERIFYCONTEXT | CRYPT_SILENT)) {

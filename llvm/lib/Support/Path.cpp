@@ -1172,10 +1172,11 @@ const char *mapped_file_region::const_data() const {
 } // end namespace llvm
 
 // Include the truly platform-specific parts.
-#if defined(LLVM_ON_UNIX)
+#if defined(LLVM_NO_PLATFORM)
+#include "noop/Path.inc"
+#elif defined(LLVM_ON_UNIX)
 #include "Unix/Path.inc"
-#endif
-#if defined(_WIN32)
+#elif defined(_WIN32)
 #include "Windows/Path.inc"
 #endif
 

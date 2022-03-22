@@ -8548,7 +8548,7 @@ bool LLParser::parseOptionalFFlags(FunctionSummary::FFlags &FFlags) {
   assert(Lex.getKind() == lltok::kw_funcFlags);
   Lex.Lex();
 
-  if (parseToken(lltok::colon, "expected ':' in funcFlags") |
+  if (parseToken(lltok::colon, "expected ':' in funcFlags") ||
       parseToken(lltok::lparen, "expected '(' in funcFlags"))
     return true;
 
@@ -8610,7 +8610,7 @@ bool LLParser::parseOptionalCalls(std::vector<FunctionSummary::EdgeTy> &Calls) {
   assert(Lex.getKind() == lltok::kw_calls);
   Lex.Lex();
 
-  if (parseToken(lltok::colon, "expected ':' in calls") |
+  if (parseToken(lltok::colon, "expected ':' in calls") ||
       parseToken(lltok::lparen, "expected '(' in calls"))
     return true;
 
@@ -8702,7 +8702,7 @@ bool LLParser::parseOptionalVTableFuncs(VTableFuncList &VTableFuncs) {
   assert(Lex.getKind() == lltok::kw_vTableFuncs);
   Lex.Lex();
 
-  if (parseToken(lltok::colon, "expected ':' in vTableFuncs") |
+  if (parseToken(lltok::colon, "expected ':' in vTableFuncs") ||
       parseToken(lltok::lparen, "expected '(' in vTableFuncs"))
     return true;
 

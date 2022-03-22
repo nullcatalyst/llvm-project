@@ -167,6 +167,8 @@ cc_library(
         "lib/Support/*.cpp",
         "lib/Support/*.h",
         "lib/Support/*.inc",
+        "lib/Support/noop/*.h",
+        "lib/Support/noop/*.inc",
     ]) + select({
         "@bazel_tools//src/conditions:windows": glob([
             "lib/Support/Windows/*.h",

@@ -118,14 +118,12 @@ static llvm::ManagedStatic<DynamicLibrary::HandleSet> OpenedHandles;
 static llvm::ManagedStatic<llvm::sys::SmartMutex<true>> SymbolsMutex;
 } // namespace
 
-#ifdef _WIN32
-
+#ifdef LLVM_NO_PLATFORM
+#include "noop/DynamicLibrary.inc"
+#elif defined(_WIN32)
 #include "Windows/DynamicLibrary.inc"
-
 #else
-
 #include "Unix/DynamicLibrary.inc"
-
 #endif
 
 char DynamicLibrary::Invalid;

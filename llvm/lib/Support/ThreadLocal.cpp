@@ -38,6 +38,8 @@ void ThreadLocalImpl::removeInstance() {
   setInstance(nullptr);
 }
 }
+#elif defined(LLVM_NO_PLATFORM)
+#include "noop/ThreadLocal.inc"
 #elif defined(LLVM_ON_UNIX)
 #include "Unix/ThreadLocal.inc"
 #elif defined( _WIN32)

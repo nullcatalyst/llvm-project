@@ -31,6 +31,7 @@
 #include "llvm/ADT/Twine.h"
 #include "llvm/Config/llvm-config.h"
 #include "llvm/Support/Chrono.h"
+#include "llvm/Support/Errc.h"
 #include "llvm/Support/Error.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/ErrorOr.h"
@@ -199,11 +200,15 @@ public:
   /// same machine.
   TimePoint<> getLastModificationTime() const;
 
-  #if defined(LLVM_ON_UNIX)
+#ifdef LLVM_NO_PLATFORM
+  uint32_t getUser() const { return 0; }
+  uint32_t getGroup() const { return 0; }
+  uint64_t getSize() const { return 0; }
+#elif defined(LLVM_ON_UNIX)
   uint32_t getUser() const { return fs_st_uid; }
   uint32_t getGroup() const { return fs_st_gid; }
   uint64_t getSize() const { return fs_st_size; }
-  #elif defined (_WIN32)
+#elif defined (_WIN32)
   uint32_t getUser() const {
     return 9999; // Not applicable to Windows, so...
   }
@@ -215,7 +220,7 @@ public:
   uint64_t getSize() const {
     return (uint64_t(FileSizeHigh) << 32) + FileSizeLow;
   }
-  #endif
+#endif
 
   // setters
   void type(file_type v) { Type = v; }
@@ -689,12 +694,16 @@ ErrorOr<perms> getPermissions(const Twine &Path);
 /// @returns errc::success if result has been successfully set, otherwise a
 ///          platform-specific error_code.
 inline std::error_code file_size(const Twine &Path, uint64_t &Result) {
+#ifdef LLVM_NO_PLATFORM
+return make_error_code(errc::function_not_supported);
+#else
   file_status Status;
   std::error_code EC = status(Path, Status);
   if (EC)
     return EC;
   Result = Status.getSize();
   return std::error_code();
+#endif
 }
 
 /// Set the file modification and access time.

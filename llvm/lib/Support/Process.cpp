@@ -104,9 +104,10 @@ void Process::Exit(int RetCode, bool NoCleanup) {
 }
 
 // Include the platform-specific parts of this class.
-#ifdef LLVM_ON_UNIX
+#if defined(LLVM_NO_PLATFORM)
+#include "noop/Process.inc"
+#elif defined(LLVM_ON_UNIX)
 #include "Unix/Process.inc"
-#endif
-#ifdef _WIN32
+#elif defined(_WIN32)
 #include "Windows/Process.inc"
 #endif
