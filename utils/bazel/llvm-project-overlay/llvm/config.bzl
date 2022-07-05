@@ -4,7 +4,30 @@
 
 """Defines variables that use selects to configure LLVM based on platform."""
 
+load(":targets.bzl", "llvm_targets")
+
+_DEFAULT_TARGET_TRIPLES = {
+    "X86": select({
+        "@bazel_tools//src/conditions:windows": "x86_64-pc-win32",
+        "@bazel_tools//src/conditions:darwin": "x86_64-unknown-darwin",
+        "//conditions:default": "x86_64-unknown-linux-gnu",
+    }),
+    "AArch64": select({
+        "@bazel_tools//src/conditions:darwin": "arm64-apple-darwin",
+        "//conditions:default": "aarch64-unknown-linux-gnu",
+    }),
+    "PowerPC": "powerpc64le-unknown-linux-gnu",
+    "SystemZ": "systemz-unknown-linux_gnu",
+    "WebAssembly": "wasm32-unknown-unknown",
+}
+
 def native_arch_defines(arch, triple):
+    if arch not in llvm_targets:
+        defines = [r'LLVM_HOST_TRIPLE=\"{}\"'.format(triple)]
+        if len(llvm_targets) > 0 and llvm_targets[0] in _DEFAULT_TARGET_TRIPLES:
+            defines.append(r'LLVM_DEFAULT_TARGET_TRIPLE=\"{}\"'.format("" + _DEFAULT_TARGET_TRIPLES[llvm_targets[0]]))
+        return defines
+
     return [
         r'LLVM_NATIVE_ARCH=\"{}\"'.format(arch),
         "LLVM_NATIVE_ASMPARSER=LLVMInitialize{}AsmParser".format(arch),
