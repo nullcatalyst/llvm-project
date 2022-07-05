@@ -60,7 +60,7 @@
 
 /* Define to 1 if you have the declaration of `FE_INEXACT', and to 0 if you
    don't. */
-#define HAVE_DECL_FE_INEXACT 1
+// #define HAVE_DECL_FE_INEXACT 1
 
 /* Define to 1 if you have the declaration of `strerror_s', and to 0 if you
    don't. */
