@@ -738,7 +738,7 @@ void ELFWriter::computeSymbolTable(
     for (; FileNameIt != FileNames.end() && FileNameIt->second <= MSD.Order;
          ++FileNameIt) {
       Writer.writeSymbol(StrTabBuilder.getOffset(FileNameIt->first),
-                         ELF::STT_FILE | ELF::STB_LOCAL, 0, 0, ELF::STV_DEFAULT,
+                         static_cast<unsigned int>(ELF::STT_FILE) | static_cast<unsigned int>(ELF::STB_LOCAL), 0, 0, ELF::STV_DEFAULT,
                          ELF::SHN_ABS, true);
       ++Index;
     }
@@ -751,7 +751,7 @@ void ELFWriter::computeSymbolTable(
   }
   for (; FileNameIt != FileNames.end(); ++FileNameIt) {
     Writer.writeSymbol(StrTabBuilder.getOffset(FileNameIt->first),
-                       ELF::STT_FILE | ELF::STB_LOCAL, 0, 0, ELF::STV_DEFAULT,
+                       static_cast<unsigned int>(ELF::STT_FILE) | static_cast<unsigned int>(ELF::STB_LOCAL), 0, 0, ELF::STV_DEFAULT,
                        ELF::SHN_ABS, true);
     ++Index;
   }

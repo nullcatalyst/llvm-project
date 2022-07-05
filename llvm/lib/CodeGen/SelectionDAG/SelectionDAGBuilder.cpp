@@ -8676,7 +8676,7 @@ public:
       Flags |= InlineAsm::Extra_IsAlignStack;
     if (Call.isConvergent())
       Flags |= InlineAsm::Extra_IsConvergent;
-    Flags |= IA->getDialect() * InlineAsm::Extra_AsmDialect;
+    Flags |= static_cast<unsigned int>(IA->getDialect()) * static_cast<unsigned int>(InlineAsm::Extra_AsmDialect);
   }
 
   void update(const TargetLowering::AsmOperandInfo &OpInfo) {

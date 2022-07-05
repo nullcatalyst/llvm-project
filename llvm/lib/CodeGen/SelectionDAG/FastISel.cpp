@@ -1169,7 +1169,7 @@ bool FastISel::selectCall(const User *I) {
       ExtraInfo |= InlineAsm::Extra_IsAlignStack;
     if (Call->isConvergent())
       ExtraInfo |= InlineAsm::Extra_IsConvergent;
-    ExtraInfo |= IA->getDialect() * InlineAsm::Extra_AsmDialect;
+    ExtraInfo |= static_cast<unsigned int>(IA->getDialect()) * static_cast<unsigned int>(InlineAsm::Extra_AsmDialect);
 
     MachineInstrBuilder MIB = BuildMI(*FuncInfo.MBB, FuncInfo.InsertPt, DbgLoc,
                                       TII.get(TargetOpcode::INLINEASM));

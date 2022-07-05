@@ -3594,10 +3594,10 @@ public:
 
     if (const CodeGenIntrinsic *IntInfo = N->getIntrinsicInfo(CDP)) {
       // If this is an intrinsic, analyze it.
-      if (IntInfo->ModRef & CodeGenIntrinsic::MR_Ref)
+      if (static_cast<unsigned int>(IntInfo->ModRef) & static_cast<unsigned int>(CodeGenIntrinsic::MR_Ref))
         mayLoad = true;// These may load memory.
 
-      if (IntInfo->ModRef & CodeGenIntrinsic::MR_Mod)
+      if (static_cast<unsigned int>(IntInfo->ModRef) & static_cast<unsigned int>(CodeGenIntrinsic::MR_Mod))
         mayStore = true;// Intrinsics that can write to memory are 'mayStore'.
 
       if (IntInfo->ModRef >= CodeGenIntrinsic::ReadWriteMem ||

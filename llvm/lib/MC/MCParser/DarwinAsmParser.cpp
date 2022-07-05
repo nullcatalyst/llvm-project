@@ -267,16 +267,16 @@ public:
 
   bool parseSectionDirectiveSymbolStub(StringRef, SMLoc) {
     return parseSectionSwitch("__TEXT","__symbol_stub",
-                              MachO::S_SYMBOL_STUBS |
-                              MachO::S_ATTR_PURE_INSTRUCTIONS,
+                              static_cast<unsigned int>(MachO::S_SYMBOL_STUBS) |
+                              static_cast<unsigned int>(MachO::S_ATTR_PURE_INSTRUCTIONS),
                               // FIXME: Different on PPC and ARM.
                               0, 16);
   }
 
   bool parseSectionDirectivePICSymbolStub(StringRef, SMLoc) {
     return parseSectionSwitch("__TEXT","__picsymbol_stub",
-                              MachO::S_SYMBOL_STUBS |
-                              MachO::S_ATTR_PURE_INSTRUCTIONS, 0, 26);
+                              static_cast<unsigned int>(MachO::S_SYMBOL_STUBS) |
+                              static_cast<unsigned int>(MachO::S_ATTR_PURE_INSTRUCTIONS), 0, 26);
   }
 
   bool parseSectionDirectiveData(StringRef, SMLoc) {
@@ -362,14 +362,14 @@ public:
 
   bool parseSectionDirectiveObjCClsRefs(StringRef, SMLoc) {
     return parseSectionSwitch("__OBJC", "__cls_refs",
-                              MachO::S_ATTR_NO_DEAD_STRIP |
-                              MachO::S_LITERAL_POINTERS, 4);
+                              static_cast<unsigned int>(MachO::S_ATTR_NO_DEAD_STRIP) |
+                              static_cast<unsigned int>(MachO::S_LITERAL_POINTERS), 4);
   }
 
   bool parseSectionDirectiveObjCMessageRefs(StringRef, SMLoc) {
     return parseSectionSwitch("__OBJC", "__message_refs",
-                              MachO::S_ATTR_NO_DEAD_STRIP |
-                              MachO::S_LITERAL_POINTERS, 4);
+                              static_cast<unsigned int>(MachO::S_ATTR_NO_DEAD_STRIP) |
+                              static_cast<unsigned int>(MachO::S_LITERAL_POINTERS), 4);
   }
 
   bool parseSectionDirectiveObjCSymbols(StringRef, SMLoc) {

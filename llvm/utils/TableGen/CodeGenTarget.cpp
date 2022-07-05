@@ -840,24 +840,24 @@ void CodeGenIntrinsic::setProperty(Record *R) {
   if (R->getName() == "IntrNoMem")
     ModRef = NoMem;
   else if (R->getName() == "IntrReadMem") {
-    if (!(ModRef & MR_Ref))
+    if (!(static_cast<unsigned int>(ModRef) & static_cast<unsigned int>(MR_Ref)))
       PrintFatalError(TheDef->getLoc(),
                       Twine("IntrReadMem cannot be used after IntrNoMem or "
                             "IntrWriteMem. Default is ReadWrite"));
-    ModRef = ModRefBehavior(ModRef & ~MR_Mod);
+    ModRef = ModRefBehavior(static_cast<unsigned int>(ModRef) & ~static_cast<unsigned int>(MR_Mod));
   } else if (R->getName() == "IntrWriteMem") {
-    if (!(ModRef & MR_Mod))
+    if (!(static_cast<unsigned int>(ModRef) & static_cast<unsigned int>(MR_Mod)))
       PrintFatalError(TheDef->getLoc(),
                       Twine("IntrWriteMem cannot be used after IntrNoMem or "
                             "IntrReadMem. Default is ReadWrite"));
-    ModRef = ModRefBehavior(ModRef & ~MR_Ref);
+    ModRef = ModRefBehavior(static_cast<unsigned int>(ModRef) & ~static_cast<unsigned int>(MR_Ref));
   } else if (R->getName() == "IntrArgMemOnly")
-    ModRef = ModRefBehavior((ModRef & ~MR_Anywhere) | MR_ArgMem);
+    ModRef = ModRefBehavior((static_cast<unsigned int>(ModRef) & ~static_cast<unsigned int>(MR_Anywhere)) | static_cast<unsigned int>(MR_ArgMem));
   else if (R->getName() == "IntrInaccessibleMemOnly")
-    ModRef = ModRefBehavior((ModRef & ~MR_Anywhere) | MR_InaccessibleMem);
+    ModRef = ModRefBehavior((static_cast<unsigned int>(ModRef) & ~static_cast<unsigned int>(MR_Anywhere)) | static_cast<unsigned int>(MR_InaccessibleMem));
   else if (R->getName() == "IntrInaccessibleMemOrArgMemOnly")
-    ModRef = ModRefBehavior((ModRef & ~MR_Anywhere) | MR_ArgMem |
-                            MR_InaccessibleMem);
+    ModRef = ModRefBehavior((static_cast<unsigned int>(ModRef) & ~static_cast<unsigned int>(MR_Anywhere)) | static_cast<unsigned int>(MR_ArgMem) |
+                            static_cast<unsigned int>(MR_InaccessibleMem));
   else if (R->getName() == "Commutative")
     isCommutative = true;
   else if (R->getName() == "Throws")
