@@ -334,7 +334,7 @@ std::string getMainExecutableImpl(const char *argv0, void *MainAddr) {
   if (realpath(DLInfo.dli_fname, link_path))
     return link_path;
 #else
-#error GetMainExecutable is not implemented on this host yet.
+//#error GetMainExecutable is not implemented on this host yet.
 #endif
   return "";
 }
