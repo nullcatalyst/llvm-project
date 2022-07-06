@@ -70,7 +70,7 @@ linux_defines = posix_defines + [
 ]
 
 macos_defines = posix_defines + [
-    "HAVE_MACH_MACH_H=1",
+    # "HAVE_MACH_MACH_H=1",
     "HAVE_MALLOC_MALLOC_H=1",
     "HAVE_MALLOC_ZONE_STATISTICS=1",
     "HAVE_PROC_PID_RUSAGE=1",
