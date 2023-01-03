@@ -206,6 +206,12 @@ cc_library(
         "lib/Support/BLAKE3/blake3_portable.c",
         "lib/Support/BLAKE3/llvm_blake3_prefix.h",
     ] + select({
+        "@bazel_tools//src/conditions:windows": [
+            "lib/Support/BLAKE3/blake3_sse2_x86-64_windows_msvc.asm",
+            "lib/Support/BLAKE3/blake3_sse41_x86-64_windows_msvc.asm",
+            "lib/Support/BLAKE3/blake3_avx2_x86-64_windows_msvc.asm",
+            "lib/Support/BLAKE3/blake3_avx512_x86-64_windows_msvc.asm",
+        ],
         "@platforms//cpu:aarch64": [
             "lib/Support/BLAKE3/blake3_neon.c",
         ],
